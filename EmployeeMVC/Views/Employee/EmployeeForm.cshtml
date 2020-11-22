@@ -1,0 +1,36 @@
+@model EmployeeInformationViewModel;
+
+<div>
+    <h2 class="text-center my-4">
+        Create Employee
+    </h2>
+    <form asp-action="CreateEmployee">
+        <div class="form-group">
+            <label asp-for="FirstName">First Name</label>
+            <input type="text" class="form-control" asp-for="FirstName" />
+        </div>
+        <div class="form-group">
+            <label asp-for="LastName">Last Name</label>
+            <input type="text" class="form-control" asp-for="LastName" />
+
+        </div>
+        <div class="form-group">
+            <label asp-for="Age">Age</label>
+            <input type="text" class="form-control" asp-for="Age" />
+
+        </div>
+        <div class="form-group">
+            <label asp-for="Designation">Designation</label>
+            <input type="text" class="form-control" asp-for="Designation" />
+
+        </div>
+        <div class="form-group">
+            <label asp-for="Salary">Salary</label>
+            <input type="text" class="form-control" asp-for="Salary" />
+        </div>
+        <div class="d-flex justify-content-center">
+            <button type="submit" class="btn btn-dark btn-lg mt-4" style="width:150px;">Save</button>
+        </div>
+
+    </form>
+</div>
