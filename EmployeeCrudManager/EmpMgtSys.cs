@@ -17,7 +17,7 @@ namespace EmployeeCrudManager
         private readonly IEmpStorage _empStorage;
 
         // print method called of EmpstorageLists
-        public List<EmployeeInformation> Print () {
+        public IEnumerable<EmployeeInformation> Print () {
             return _empStorage.Print ();
         }
         // SearchEmp method called 

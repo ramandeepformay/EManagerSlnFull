@@ -8,6 +8,8 @@ using EmployeeCrudManager.Models;
 using EmployeeMVC.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+
 namespace EmployeeMVC.Controllers {
     public class EmployeeController : Controller {
         private EmpMgtSys _employee;
@@ -34,10 +36,21 @@ namespace EmployeeMVC.Controllers {
 
         [HttpPost]
         public IActionResult CreateEmployee (EmployeeInformationViewModel _emp) {
-            var age = Convert.ToInt32 (_emp.Age);
+            // var age = Convert.ToInt32 (_emp.Age);
             // var sal = Convert.ToInt32 (_emp.Salary);
-            _employee.Create (_emp.FirstName, _emp.LastName, age, _emp.Designation, _emp.Salary);
-            return RedirectToAction ("Directory");
+            if (ModelState.IsValid) {
+                _employee.Create (_emp.FirstName, _emp.LastName, _emp.Age, _emp.Designation, _emp.Salary);
+                return RedirectToAction ("Directory");
+            }
+            return View ("EmployeeForm", _emp);
+        }
+
+        public IActionResult Performance (List<EmployeeInformation> employee) {
+
+            List<DataPointViewModel> dataPoints = new List<DataPointViewModel> ();
+            dataPoints.Add ((new DataPointViewModel ("Ramandeep", 40)));
+            ViewBag.DataPoints = JsonConvert.SerializeObject (dataPoints);
+            return View ();
         }
 
         [ResponseCache (Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
