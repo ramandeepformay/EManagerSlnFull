@@ -1,49 +1,83 @@
+@model PerformanceViewModel;
 @{
     ViewData["Title"] = "Performance";
+
 }
 
 <div>
-
     <h3 class="text-center">Employee Performance</h3>
     <div class="container mt-5 pt-4">
-        <div class="row">
-            <div class="col-4 text-center">
-                <h4>Functionality</h4>
+        <div class="row justify-content-end">
+            <div class="col-lg-6 col-md-12  text-center table-responsive-sm">
+                <table class="table">
+                    <thead class="thead-dark">
+
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">FirstName</th>
+                            <th scope="col">Rating</th>
+                            <th scope="col">Increase</th>
+                            <th scope="col">Decrease</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.Rating.Count; i++)
+                        {
+                            <tr>
+                                <th scope="row">@(i+1)</th>
+                                <td class="text-left">@Model.Rating[i].FirstName</td>
+                                <td>@Model.Rating[i].Rating</td>
+
+                                <td>
+                                    <a asp-action="RatingUpdate" asp-route-popularity="inc"
+                                        asp-route-value="@Model.Rating[i].Rating" asp-route-Id="@Model.Rating[i].Id"
+                                        type="button" class="btn btn-success d-inline">+</a></td>
+
+                                <td>
+                                    <a asp-action="RatingUpdate" asp-route-popularity="dec"
+                                        asp-route-value="@Model.Rating[i].Rating" asp-route-Id="@Model.Rating[i].Id"
+                                        type="button" class="btn btn-danger d-inline">-</a>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
             </div>
-            <div class="col-8 text-center">
+            <div class="col-lg-6 col-md-12  text-center">
                 <div id="chartContainer" style="height:400px; width: 100%;"></div>
             </div>
         </div>
     </div>
-</div>
 
 
 
-<script>
-    window.onload = function () {
-        var chart = new CanvasJS.Chart("chartContainer", {
-            animationEnabled: true,
-            theme: "light2",
-            title: {
-                fontSize: 25,
-                margin: 40,
-                text: "Employees Rating Comparison"
-            },
-            axisX: {
-                titleFontColor: "black",
-                padding: 20,
-                title: "Employee Name"
-            },
-            axisY: {
-                titleFontColor: "black",
-                padding: 20,
-                title: "Rating"
-            },
-            data: [{
-                type: "column",
-                dataPoints: @Html.Raw(ViewBag.DataPoints)
- }]
-        });
-        chart.render();
-    }
-</script>
+
+    <script>
+        window.onload = function () {
+            var chart = new CanvasJS.Chart("chartContainer", {
+                animationEnabled: true,
+                theme: "light2",
+                title: {
+                    fontSize: 25,
+                    margin: 40,
+                    text: "Employees Rating Comparison"
+                },
+                axisX: {
+                    titleFontColor: "black",
+                    padding: 20,
+                    title: "Employee Name"
+                },
+                axisY: {
+                    titleFontColor: "black",
+                    padding: 20,
+                    title: "Rating"
+                },
+                data: [{
+                    type: "column",
+                    dataPoints: @Html.Raw(ViewBag.DataPoints)
+     }]
+            });
+            chart.render();
+        }
+    </script>

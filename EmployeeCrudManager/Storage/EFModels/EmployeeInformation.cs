@@ -1,10 +1,7 @@
 using System;
-
-namespace EmployeeCrudManager.Models {
+namespace EmployeeCrudManager.Storage.EFModels {
     public class EmployeeInformation {
-
-        // properties 
-        public Guid Id { get; set; }
+        public Guid EmployeeInformationId { get; set; }
 
         public string FirstName { get; set; }
 
@@ -19,8 +16,7 @@ namespace EmployeeCrudManager.Models {
         public int Rating { get; set; }
 
         public DateTime Date { get; set; }
-        public string FullName {
-            get { return $"{FirstName} {LastName}"; }
-        }
+
+        public bool IsDeleted { get; set; }
     }
 }

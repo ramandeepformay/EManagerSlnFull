@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -25,9 +26,12 @@ namespace EmployeeMVC {
             services.AddRazorPages ()
                 .AddRazorRuntimeCompilation ();
 
-            var employeeStorage = new EmpStorageLists ();
-            var eManager = new EmpMgtSys (employeeStorage);
-            services.AddSingleton<EmpMgtSys> (eManager);
+            string connectionString = "Host=suleiman.db.elephantsql.com;Port=5432;Database=dukoulvj;Username=dukoulvj;Password=hTz-BlR22XqwvVopAZnXyBJIHldwGbsd";
+            services.AddDbContext<ApplicationContext> (options => options.UseNpgsql (connectionString, b => b.MigrationsAssembly ("EmployeeMVC")));
+
+            services.AddScoped<IEmpStorage, EmpStorageListsEF> ();
+            services.AddScoped<EmpMgtSys> ();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,7 +55,7 @@ namespace EmployeeMVC {
             app.UseEndpoints (endpoints => {
                 endpoints.MapControllerRoute (
                     name: "default",
-                    pattern: "{controller=Employee}/{action=Index}/{id?}");
+                    pattern: "{controller=Employee}/{action=Index}/{id=UrlParameter.Optional}");
             });
         }
     }

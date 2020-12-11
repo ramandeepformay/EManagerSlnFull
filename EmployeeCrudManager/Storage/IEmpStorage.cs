@@ -1,15 +1,18 @@
+using System;
 using System.Collections.Generic;
 using EmployeeCrudManager.Models;
 
 namespace EmployeeCrudManager.Storage {
     public interface IEmpStorage {
         void CreateEmp (EmployeeInformation employee);
-        IEnumerable<EmployeeInformation> Print ();
-        EmployeeInformation SearchEmp (string emp);
+        List<EmployeeInformation> Print ();
+        List<EmployeeInformation> SearchEmp (string emp);
+        EmployeeInformation SearchEmpId (Guid empId);
         EmployeeInformation DeleteEmp (string emp);
-        EmployeeInformation RankChanger (string emp, string user);
+        void DeleteEmpId (Guid empId);
+        EmployeeInformation Converter (Guid Id);
         string UpperFirstChar (string name);
-
-        string FormatNumber (double salary);
+        void Update (EmployeeInformation employee);
+        void Rank (string popularity, int value, Guid Id);
     }
 }

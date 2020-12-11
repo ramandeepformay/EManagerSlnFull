@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 namespace EmployeeMVC.Models {
 
-    // public Guid Id { get; set; }
     [DataContract]
     public class DataPointViewModel {
         public DataPointViewModel (string label, double y) {
@@ -18,6 +17,5 @@ namespace EmployeeMVC.Models {
         //Explicitly setting the name to be used while serializing to JSON.
         [DataMember (Name = "y")]
         public Nullable<double> Y = null;
-
     }
 }

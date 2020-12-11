@@ -1,57 +1,98 @@
-﻿@{
+﻿@model List<EmployeeCrudManager.Models.EmployeeInformation>
+@{
     ViewData["Title"] = "Directory";
-    var date = DateTime.Now.ToString();
+
 }
 
-@model List<EmployeeCrudManager.Models.EmployeeInformation>;
 
 <div>
     <div>
         <h3 class="text-center mt-3">Employees List</h3>
     </div>
 
-    <div class="container-fluid mt-5">
-        <div class="row">
-            <div class="col">
-                <p>Total Employees: @Model.Count</p>
-            </div>
-            <div class="col text-right">
-                <p>Last Employee Created: @Model[Model.Count-1].FirstName</p>
-                <p>Creation Time:@date</p>
-            </div>
+    @if (ViewContext.ViewBag.display == "not-disp")
+    {
+        <div class="mt-5 ">
+            <table class="table ">
+                <thead class="thead-dark">
 
-        </div>
-    </div>
-
-    <div class="mt-4">
-        <table class="table">
-            <thead class="thead-dark">
-
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">First Name</th>
-                    <th scope="col">Last Name</th>
-                    <th scope="col">Age</th>
-                    <th scope="col">Designation</th>
-                    <th scope="col">Salary</th>
-                </tr>
-            </thead>
-            <tbody>
-                @for (int i = 0; i < Model.Count; i++)
-                {
                     <tr>
-                        <th scope="row">@(i+1)</th>
-                        <td>@Model[i].FirstName</td>
-                        <td>@Model[i].LastName</td>
-                        <td>@Model[i].Age</td>
-                        <td>@Model[i].Designation</td>
-                        <td>@Model[i].Salary</td>
+                        <th scope="col">#</th>
+                        <th scope="col">FirstName</th>
+                        <th scope="col">LastName</th>
+                        <th scope="col">Age</th>
+                        <th scope="col">Designation</th>
+                        <th scope="col">Salary</th>
                     </tr>
+                </thead>
+            </table>
+            <h5 class="text-center mt-5"> Please Add Employees in the Directory</h5>
+        </div>
+    }
+
+    else
+    {
+        <div class="container-fluid mt-5">
+            <div class="row">
+                <div class="col-md-6 col-sm-12 text-center">
+                    <p>Total Employees: @Model.Count</p>
+
+                    <form asp-action="Search" asp-controller="Employee" class="container py-3">
+                        <div class="row">
+                            @Html.TextBox("empSearch",null, new { @class = "form-control col-md-6 center-block", id =
+                                       "exampleInputEmail1",
+                                   })
+                            <input type="submit" value="Search" class="btn btn-dark  col-md-3 center-block" />
+                        </div>
+                    </form>
+
+                </div>
+                @if (ViewContext.ViewBag.display == "disp-full")
+                {
+                    <div class="col-md-6 col-sm-12 text-center">
+                        <p>Last Employee Created: @Model[Model.Count-1].FirstName</p>
+                        <p class="pt-3">Creation Time: @Model[Model.Count-1].Date</p>
+                    </div>
                 }
+            </div>
+        </div>
 
-            </tbody>
-        </table>
-    </div>
+        <div class="mt-4 table-responsive-md">
+            <table class="table table-hover" id="Table">
+                <thead class="thead-dark">
 
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">FirstName</th>
+                        <th scope="col">LastName</th>
+                        <th scope="col">Age</th>
+                        <th scope="col">Designation</th>
+                        <th scope="col">Salary</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.Count; i++)
+                    {
+                        var Salary = @Model[i].Salary;
+                        <tr>
+                            <th scope="row">@(i+1)</th>
+                            <td>@Model[i].FirstName</td>
+                            <td>@Model[i].LastName</td>
+                            <td>@Model[i].Age</td>
+                            <td>@Model[i].Designation</td>
+                            <td>@Salary.ToString("C")</td>
+                            <td><a type="button" class="btn btn-primary" asp-controller="Employee" asp-action="Edit"
+                                    asp-route-empId="@Model[i].Id">Edit <i class="far fa-edit"></i></a></td>
 
+                            <td><a type="button" class="btn btn-danger" asp-controller="Employee" asp-action="Delete"
+                                    asp-route-empId="@Model[i].Id">Delete <i class="far fa-trash-alt"></i></a></td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    }
 </div>

@@ -2,7 +2,8 @@ using System;
 using System.ComponentModel.DataAnnotations;
 namespace EmployeeMVC.Models {
     public class EmployeeInformationViewModel {
-        // public Guid Id { get; set; }
+        public Guid? Id { get; set; }
+
         [Required]
         [StringLength (30)]
         [RegularExpression ("^[a-zA-Z]+$", ErrorMessage = "Numbers are not allowed")]
@@ -14,7 +15,7 @@ namespace EmployeeMVC.Models {
         public string LastName { get; set; }
 
         [Required]
-        [RegularExpression ("^([2-5][0-9]|6[0-5])$", ErrorMessage = "Must be a number between 20 and 60")]
+        [RegularExpression ("^([2-5][0-9]|6[0-5])$", ErrorMessage = "Must be a number between 19 and 61")]
         public int Age { get; set; }
 
         [Required]
@@ -26,7 +27,6 @@ namespace EmployeeMVC.Models {
         [RegularExpression ("^([3-8][0-9]{4}|9[0-8][0-9]{3}|99[0-8][0-9]{2}|999[0-8][0-9]|9999[0-9]|[1-8][0-9]{5}|900000)$", ErrorMessage = "Must be a number between 30,000 and 90,000")]
         public double Salary { get; set; }
 
-        // public int Rating { get; set; }
-
+        public DateTime? Date { get; set; }
     }
 }
