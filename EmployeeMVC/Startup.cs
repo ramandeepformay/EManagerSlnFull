@@ -29,7 +29,8 @@ namespace EmployeeMVC {
                 .AddRazorRuntimeCompilation ();
             string connectionString = Configuration.GetConnectionString ("DefaultDB");
             services.AddDbContext<ApplicationContext> (options => options.UseNpgsql (connectionString, b => b.MigrationsAssembly ("EmployeeMVC")));
-            services.AddDefaultIdentity<IdentityUser> (options => options.SignIn.RequireConfirmedAccount = true).
+            services.AddDefaultIdentity<IdentityUser> (options =>
+                options.SignIn.RequireConfirmedAccount = true).
             AddEntityFrameworkStores<ApplicationContext> ();
             services.AddScoped<IEmpStorage, EmpStorageListsEF> ();
             services.AddScoped<EmpMgtSys> ();
