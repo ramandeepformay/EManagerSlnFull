@@ -6,15 +6,19 @@ using System.Threading.Tasks;
 using EmployeeCrudManager;
 using EmployeeCrudManager.Models;
 using EmployeeMVC.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 namespace EmployeeMVC.Controllers {
+    [Authorize]
     public class EmployeeController : Controller {
         private EmpMgtSys _employee;
-
-        public EmployeeController (EmpMgtSys employee) {
+        private UserManager<IdentityUser> _userManager;
+        public EmployeeController (EmpMgtSys employee, UserManager<IdentityUser> userManager) {
             _employee = employee;
+            _userManager = userManager;
         }
 
         // main page action 
@@ -24,14 +28,15 @@ namespace EmployeeMVC.Controllers {
         }
         // company directory displays all the results 
         public IActionResult Directory (string empSearch) {
-            var employees = _employee.Print ();
+            var user = userId ();
+            var employees = _employee.Print (user);
             if (employees.Count == 0) {
                 ViewBag.display = "not-disp";
                 return View (employees);
             }
             if (empSearch != null) {
                 ViewBag.display = "disp";
-                var updatedLists = _employee.Search (empSearch);
+                var updatedLists = _employee.Search (empSearch, user);
                 return View (updatedLists);
             } else {
                 ViewBag.display = "disp-full";
@@ -55,7 +60,8 @@ namespace EmployeeMVC.Controllers {
                     Designation = employee.Designation,
                     Salary = employee.Salary,
                     Date = DateTime.Now,
-                    Rating = 10
+                    Rating = 10,
+                    UserId = userId ()
                 };
                 _employee.Create (Employee);
                 return RedirectToAction ("Directory");
@@ -68,7 +74,7 @@ namespace EmployeeMVC.Controllers {
             var performance = new PerformanceViewModel ();
             performance.DataPoint = new List<DataPointViewModel> ();
             performance.Rating = new List<RatingViewModel> ();
-            var updatedEmployes = _employee.Print ();
+            var updatedEmployes = _employee.Print (userId ());
             for (int i = 0; i < updatedEmployes.Count; i++) {
                 performance.Rating.Add (new RatingViewModel {
                     Id = updatedEmployes[i].Id,
@@ -83,7 +89,7 @@ namespace EmployeeMVC.Controllers {
         }
         // edit the employee
         public IActionResult Edit (Guid empId) {
-            var employeeEdit = _employee.SearchId (empId);
+            var employeeEdit = _employee.SearchId (empId, userId ());
             var EmployeeInformationViewModelUpdated = new EmployeeInformationViewModel () {
                 Id = employeeEdit.Id,
                 FirstName = employeeEdit.FirstName,
@@ -91,7 +97,8 @@ namespace EmployeeMVC.Controllers {
                 Age = employeeEdit.Age,
                 Salary = employeeEdit.Salary,
                 Designation = employeeEdit.Designation,
-                Date = employeeEdit.Date
+                Date = employeeEdit.Date,
+                Rating = employeeEdit.Rating
             };
             ViewBag.Update = true;
             return View ("EmployeeForm", EmployeeInformationViewModelUpdated);
@@ -106,7 +113,10 @@ namespace EmployeeMVC.Controllers {
                     LastName = employee.LastName,
                     Age = employee.Age,
                     Designation = employee.Designation,
-                    Salary = employee.Salary
+                    Salary = employee.Salary,
+                    Rating = (int) employee.Rating,
+                    Date = (DateTime) employee.Date,
+                    UserId = userId ()
                 };
                 _employee.Update (employeeView);
                 return RedirectToAction ("Directory");
@@ -118,7 +128,7 @@ namespace EmployeeMVC.Controllers {
         // delete the employee
         [HttpGet]
         public IActionResult Delete (Guid empId) {
-            _employee.DeleteId (empId);
+            _employee.DeleteId (empId, userId ());
             return RedirectToAction ("Directory");
         }
         // search the employee
@@ -135,6 +145,11 @@ namespace EmployeeMVC.Controllers {
         [ResponseCache (Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error () {
             return View (new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        private Guid userId () {
+            string stringUser = _userManager.GetUserId (User);
+            return Guid.Parse (stringUser);
         }
     }
 }

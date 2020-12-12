@@ -27,6 +27,7 @@ namespace EmployeeMVC.Models {
         [RegularExpression ("^([3-8][0-9]{4}|9[0-8][0-9]{3}|99[0-8][0-9]{2}|999[0-8][0-9]|9999[0-9]|[1-8][0-9]{5}|900000)$", ErrorMessage = "Must be a number between 30,000 and 90,000")]
         public double Salary { get; set; }
 
+        public int? Rating { get; set; }
         public DateTime? Date { get; set; }
     }
 }
