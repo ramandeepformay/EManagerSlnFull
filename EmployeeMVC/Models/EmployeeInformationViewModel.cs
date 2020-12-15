@@ -15,7 +15,7 @@ namespace EmployeeMVC.Models {
         public string LastName { get; set; }
 
         [Required]
-        [RegularExpression ("^([2-5][0-9]|6[0-5])$", ErrorMessage = "Must be a number between 19 and 61")]
+        [RegularExpression ("^([2-5][0-9]|6[0-5])$", ErrorMessage = "Age must be between 19 and 66")]
         public int Age { get; set; }
 
         [Required]
@@ -24,7 +24,8 @@ namespace EmployeeMVC.Models {
         public string Designation { get; set; }
 
         [Required]
-        [RegularExpression ("^([3-8][0-9]{4}|9[0-8][0-9]{3}|99[0-8][0-9]{2}|999[0-8][0-9]|9999[0-9]|[1-8][0-9]{5}|900000)$", ErrorMessage = "Must be a number between 30,000 and 90,000")]
+        [RegularExpression ("^([3-8][0-9]{4}|9[0-8][0-9]{3}|99[0-8][0-9]{2}|999[0-8][0-9]|9999[0-9]|90000)$", ErrorMessage = "Salary must be between 29,999 and 100,000")]
+        // |[1-8][0-9]{5}
         public double Salary { get; set; }
 
         public int? Rating { get; set; }

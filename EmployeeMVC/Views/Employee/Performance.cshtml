@@ -31,7 +31,8 @@
                                 <td>
                                     <a asp-action="RatingUpdate" asp-route-popularity="inc"
                                         asp-route-value="@Model.Rating[i].Rating" asp-route-Id="@Model.Rating[i].Id"
-                                        type="button" class="btn btn-success d-inline">+</a></td>
+                                        type="button" class="btn btn-success d-inline">+</a>
+                                </td>
 
                                 <td>
                                     <a asp-action="RatingUpdate" asp-route-popularity="dec"
@@ -47,6 +48,15 @@
             <div class="col-lg-6 col-md-12  text-center">
                 <div id="chartContainer" style="height:400px; width: 100%;"></div>
             </div>
+
+        </div>
+        <div class="my-3">
+            <h4 class="text-center my-3" style="text-decoration:underline;">Rules</h4>
+            <ul class="text-center list-unstyled">
+                <li class="p-2">Excellent-- Rating Should be Greater than 20.</li>
+                <li class="p-2">Good-- Rating Should be between 10 and 20.</li>
+                <li class="p-2">Poor-- Rating Should be less than 10.</li>
+
         </div>
     </div>
 
