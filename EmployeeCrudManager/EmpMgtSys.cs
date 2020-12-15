@@ -13,19 +13,17 @@ namespace EmployeeCrudManager
         private readonly IEmpStorage _empStorage;
 
         // print method called of EmpstorageLists
-        public List<EmployeeInformation> Print () {
-            return _empStorage.Print ();
+        public List<EmployeeInformation> Print (Guid user) {
+            return _empStorage.Print (user);
         }
         // searchEmp method called  using first name property 
-        public List<EmployeeInformation> Search (string input) {
-            var result = _empStorage.SearchEmp (input);
-            return result;
+        public List<EmployeeInformation> Search (string input, Guid user) {
+            return _empStorage.SearchEmp (input, user);
         }
 
         // searchEmp method called  using id property 
-        public EmployeeInformation SearchId (Guid id) {
-            var result = _empStorage.SearchEmpId (id);
-            return result;
+        public EmployeeInformation SearchId (Guid id, Guid user) {
+            return _empStorage.SearchEmpId (id, user);
         }
         // this method first add a new emp an then return a list of employess including newly created employee
         public void Create (EmployeeInformation employee) {
@@ -36,11 +34,10 @@ namespace EmployeeCrudManager
         public void Update (EmployeeInformation employee) {
             _empStorage.Update (employee);
         }
-        // deletes employee using first name
 
         // deletes employee using id property
-        public void DeleteId (Guid id) {
-            _empStorage.DeleteEmpId (id);
+        public void DeleteId (Guid id, Guid user) {
+            _empStorage.DeleteEmpId (id, user);
         }
 
         public void Rank (string popularity, int value, Guid Id) {

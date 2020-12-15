@@ -17,6 +17,7 @@ namespace EmployeeCrudManager.Storage.EFModels {
 
         public DateTime Date { get; set; }
 
+        public Guid UserId { get; set; }
         public bool IsDeleted { get; set; }
     }
 }

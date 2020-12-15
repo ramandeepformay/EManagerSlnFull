@@ -19,11 +19,11 @@ namespace EmployeeCrudManager.Storage {
       }
 
       // return all the employees of the company
-      public List<EmployeeInformation> Print () {
+      public List<EmployeeInformation> Print (Guid User) {
          List<EmployeeInformation> emp = new List<EmployeeInformation> ();
          var emploeeDb = _context.EmployeeInformations
             .AsNoTracking ()
-            .Where (x => x.IsDeleted == false)
+            .Where (x => x.IsDeleted == false && x.UserId == User)
             .ToList ();
          foreach (var x in emploeeDb) {
             var newEmpDb = ConverterDbtoViewDb (x);
@@ -44,22 +44,22 @@ namespace EmployeeCrudManager.Storage {
       }
 
       // search employee in the list using employee id property
-      public EmployeeInformation SearchEmpId (Guid empId) {
+      public EmployeeInformation SearchEmpId (Guid empId, Guid User) {
          var empDbId = _context.EmployeeInformations
             .AsNoTracking ()
-            .Where (x => x.IsDeleted == false)
+            .Where (x => x.IsDeleted == false && x.UserId == User)
             .First (x => x.EmployeeInformationId == empId);
          var empView = ConverterDbtoViewDb (empDbId);
          return empView;
       }
 
       // search employees in the list using employee name property
-      public List<EmployeeInformation> SearchEmp (string emp) {
+      public List<EmployeeInformation> SearchEmp (string emp, Guid User) {
          List<EmployeeInformation> newEmp = new List<EmployeeInformation> ();
          var query = from x in _context.EmployeeInformations select x;
          if (!String.IsNullOrEmpty (emp)) {
             query = query
-               .Where (x => x.IsDeleted == false)
+               .Where (x => x.IsDeleted == false && x.UserId == User)
                .Where (x => x.FirstName.ToLower ()
                   .StartsWith (emp.ToLower ()));
             foreach (var x in query) {
@@ -72,22 +72,15 @@ namespace EmployeeCrudManager.Storage {
          }
 
       }
-      public EmployeeInformation DeleteEmp (string emp) {
-         return null;
-      }
 
       // delete employee in the list using employee id property
-      public void DeleteEmpId (Guid empId) {
+      public void DeleteEmpId (Guid empId, Guid User) {
          var employeeDb = _context.EmployeeInformations
             .AsNoTracking ()
-            .First (x => x.EmployeeInformationId == empId);
+            .First (x => x.EmployeeInformationId == empId && x.UserId == User);
          employeeDb.IsDeleted = true;
          _context.EmployeeInformations.Update (employeeDb);
          _context.SaveChanges ();
-      }
-
-      public EmployeeInformation Converter (Guid Id) {
-         return null;
       }
 
       //  update employee
@@ -130,7 +123,8 @@ namespace EmployeeCrudManager.Storage {
                Designation = x.Designation,
                Salary = x.Salary,
                Rating = x.Rating,
-               Date = x.Date
+               Date = x.Date,
+               UserId = x.UserId
          };
       }
 
@@ -144,6 +138,7 @@ namespace EmployeeCrudManager.Storage {
                Salary = employee.Salary,
                Rating = employee.Rating,
                Date = employee.Date,
+               UserId = employee.UserId
          };
       }
    }

@@ -19,6 +19,9 @@ namespace EmployeeCrudManager.Models {
         public int Rating { get; set; }
 
         public DateTime Date { get; set; }
+
+        public Guid UserId { get; set; }
+
         public string FullName {
             get { return $"{FirstName} {LastName}"; }
         }
