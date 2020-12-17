@@ -13,7 +13,7 @@
     @if (ViewContext.ViewBag.display == "not-disp")
     {
         <div class="mt-5 ">
-            <table class="table ">
+            <table class="table table-responsive">
                 <thead class="thead-dark">
 
                     <tr>
@@ -51,7 +51,7 @@
                 {
                     <div class="col-md-6 col-sm-12 text-center">
                         <p>Last Employee Created: @Model[Model.Count-1].FirstName</p>
-                        <p class="pt-3">Creation Time: @Model[Model.Count-1].Date</p>
+                        <p class="pt-3">Creation Time: @Model[Model.Count-1].Date.ToShortDateString()</p>
                     </div>
                 }
             </div>
